@@ -19,7 +19,19 @@ class EmployeeForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log('New employee:', this.state);
+
+    // build an employee object from what was typed
+    const employee = {
+      EmployeeId: Math.floor(Math.random() * 10000),
+      name: this.state.name,
+      email: this.state.email,
+      title: this.state.title,
+      department: this.state.department
+    };
+
+    // send it up to App using the function App passed in as a prop
+    this.props.onSubmit(employee);
+
     alert(`Employee ${this.state.name} added!`);
     this.setState({ name: '', email: '', title: '', department: '' });
   };
