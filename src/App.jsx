@@ -1,7 +1,9 @@
-import { useState } from 'react'                              // NEW
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 import EmployeeForm from './components/EmployeeForm'
+import EmployeeList from './components/EmployeeList'
+import EmployeeDetail from './components/EmployeeDetail'
 
 function Home() {
   return (
@@ -22,18 +24,18 @@ function About() {
 }
 
 function App() {
-  // NEW: the list of employees, loaded from local storage if any were saved before
+  // the list of employees, loaded from local storage if any were saved before
   const [employees, setEmployees] = useState(() => {
     const saved = localStorage.getItem('employees')
     return saved ? JSON.parse(saved) : []
   })
 
-  // NEW: add a new employee to the list
+  // add a new employee to the list
   const addEmployee = (employee) => {
     setEmployees([...employees, employee])
   }
 
-  // NEW: save the list to local storage
+  // save the list to local storage
   const saveData = () => {
     localStorage.setItem('employees', JSON.stringify(employees))
     alert('Employee data saved!')
@@ -52,11 +54,13 @@ function App() {
           path="/add-employee"
           element={
             <div>
-              <EmployeeForm onSubmit={addEmployee} />            {/* NEW: prop added */}
-              <button onClick={saveData}>Save Data</button>       {/* NEW */}
+              <EmployeeForm onSubmit={addEmployee} />
+              <EmployeeList employees={employees} />
+              <button onClick={saveData}>Save Data</button>
             </div>
           }
         />
+        <Route path="/employees/:id" element={<EmployeeDetail employees={employees} />} />
       </Routes>
     </BrowserRouter>
   )
